@@ -11,4 +11,4 @@ import { UserTaskEntity } from 'src/entity/users_tasks.entity';
   providers: [AppService],
   imports: [TypeOrmModule.forFeature([TaskEntity, UserEntity, UserTaskEntity])],
 })
-export class TaskModule {}
+export class UserTaskModule {}

@@ -28,7 +28,6 @@ export class TaskEntity {
   @Column()
   description: string;
 
-  @ManyToMany(() => UserEntity, (userEntity) => userEntity.us)
-  @JoinTable({ name: 'user_task' })
+  @ManyToMany(() => UserEntity, () => UserTaskEntity)
   users: UserEntity[];
 }

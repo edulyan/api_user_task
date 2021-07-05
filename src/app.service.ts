@@ -20,6 +20,11 @@ export class AppService {
     return this.usersRepository.findOne(id);
   }
 
+  async getByUsername(userName: string): Promise<UserEntity> {
+    const username = await this.usersRepository.findOne(userName);
+    return username;
+  }
+
   async create(userDto: User): Promise<UserEntity> {
     const newUser = this.usersRepository.create(userDto);
     return this.usersRepository.save(newUser);

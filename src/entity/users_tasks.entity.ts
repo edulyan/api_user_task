@@ -10,20 +10,15 @@ import { UserEntity } from './user.entity';
 
 @Entity()
 export class UserTaskEntity {
+  $set(arg0: string, arg1: number[]) {
+    throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  userId: number;
+  userId: string;
 
   @Column()
-  taskId: number;
-
-  @OneToOne(() => UserEntity)
-  @JoinColumn()
-  userEntity: UserEntity;
-
-  @OneToOne(() => TaskEntity)
-  @JoinColumn()
-  taskEntity: TaskEntity;
+  taskId: string;
 }

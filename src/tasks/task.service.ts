@@ -20,6 +20,11 @@ export class TaskService {
     return this.tasksRepository.findOne(id);
   }
 
+  async getByTitle(title: string): Promise<TaskEntity> {
+    const task = await this.tasksRepository.findOne(title);
+    return task;
+  }
+
   async create(taskDto: Task): Promise<TaskEntity> {
     const newTask = this.tasksRepository.create(taskDto);
     return this.tasksRepository.save(newTask);
@@ -29,7 +34,7 @@ export class TaskService {
     await this.tasksRepository.delete(id);
   }
 
-  async update(id: string, taskUpdate: TaskUpdate) {
+  async update(id: string, taskUpdate: TaskUpdate): Promise<void> {
     await this.tasksRepository.update(id, taskUpdate);
   }
 }
