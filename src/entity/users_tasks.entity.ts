@@ -17,8 +17,8 @@ export class UserTaskEntity {
   id: number;
 
   @Column()
-  userId: string;
+  userId: number;
 
   @Column()
-  taskId: string;
+  taskId: number;
 }

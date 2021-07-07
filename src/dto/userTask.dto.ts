@@ -1,4 +1,4 @@
 export class UserTaskDto {
-  readonly userId: string;
-  readonly taskId: string;
+  readonly userId: number;
+  readonly taskId: number;
 }
