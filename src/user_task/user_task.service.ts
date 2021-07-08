@@ -26,8 +26,8 @@ export class UserTaskService {
   }
 
   async getById(id: string) {
-    const userInfo = await this.userRepository.findOne(id);
-    const taskInfo = await this.taskRepository.findOne(id);
+    const userInfo = await this.userService.getById(id);
+    const taskInfo = await this.taskService.getById(id);
 
     const ut = [userInfo, taskInfo];
 
