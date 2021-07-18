@@ -1,40 +1,59 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './dto/user.dto';
+import { getConnection, Repository } from 'typeorm';
 import { UserUpdate } from './dto/userUpdate.dto';
 import { UserEntity } from './entity/user.entity';
+import { TaskEntity } from './entity/task.entity';
 
 @Injectable()
 export class AppService {
   constructor(
     @InjectRepository(UserEntity)
-    private usersRepository: Repository<UserEntity>,
+    private userRepository: Repository<UserEntity>,
+    @InjectRepository(TaskEntity)
+    private taskRepository: Repository<TaskEntity>,
   ) {}
 
   async getAll(): Promise<UserEntity[]> {
-    return this.usersRepository.find();
+    return this.userRepository.find();
   }
 
   async getById(id: string): Promise<UserEntity> {
-    return this.usersRepository.findOne(id);
+    return this.userRepository.findOne(id);
   }
 
-  async getByUsername(userName: string): Promise<UserEntity> {
-    const username = await this.usersRepository.findOne(userName);
-    return username;
+  async create(user: UserEntity, task: TaskEntity) {
+    // const newUser = this.userRepository.create(user);
+    // const newTask = this.taskRepository.create(task);
+
+    // return this.userRepository.save(newUser), this.taskRepository.save(newTask);
+
+    const newUser = this.userRepository.create(user);
+
+    const taskich = getConnection().getRepository(TaskEntity);
+    const defaultTask = taskich.create(task);
+    user.tasks = [defaultTask];
+
+    const savedNewUser: UserEntity = await this.userRepository.save(newUser);
+
+    return savedNewUser;
   }
 
-  async create(userDto: User): Promise<UserEntity> {
-    const newUser = this.usersRepository.create(userDto);
-    return this.usersRepository.save(newUser);
+  async addTask(userId: number, taskId: number) {
+    const userTarget = await this.userRepository.findOne(userId);
+    const taskTarget = await this.taskRepository.findOne(taskId);
+
+    userTarget.tasks.push(taskTarget);
+    await this.userRepository.save(userTarget);
+
+    return true;
   }
 
   async remove(id: string): Promise<void> {
-    await this.usersRepository.delete(id);
+    await this.userRepository.delete(id);
   }
 
   async update(id: string, userUpdate: UserUpdate): Promise<void> {
-    await this.usersRepository.update(id, userUpdate);
+    await this.userRepository.update(id, userUpdate);
   }
 }

@@ -1,6 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { TaskEntity } from './task.entity';
-import { UserTaskEntity } from './users_tasks.entity';
+// import { UserTaskEntity } from './users_tasks.entity';
 
 @Entity()
 export class UserEntity {
@@ -16,6 +22,7 @@ export class UserEntity {
   @Column()
   lastName: string;
 
-  @ManyToMany(() => TaskEntity, () => UserTaskEntity)
-  tasks: TaskEntity;
+  @ManyToMany((type) => TaskEntity, (task) => task.users, { eager: true })
+  @JoinTable({ name: 'user_task' })
+  tasks: TaskEntity[];
 }

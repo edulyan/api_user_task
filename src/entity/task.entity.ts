@@ -4,9 +4,11 @@ import {
   Entity,
   ManyToMany,
   JoinTable,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { UserTaskEntity } from './users_tasks.entity';
+// import { UserTaskEntity } from './users_tasks.entity';
 
 @Entity()
 export class TaskEntity {
@@ -28,6 +30,7 @@ export class TaskEntity {
   @Column()
   description: string;
 
-  @ManyToMany(() => UserEntity, () => UserTaskEntity)
+  @ManyToMany((type) => UserEntity, (user) => user.tasks)
+  @JoinColumn()
   users: UserEntity[];
 }
