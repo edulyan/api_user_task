@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getConnection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { UserUpdate } from './dto/userUpdate.dto';
 import { UserEntity } from './entity/user.entity';
 import { TaskEntity } from './entity/task.entity';
@@ -30,8 +30,7 @@ export class AppService {
 
     const newUser = this.userRepository.create(user);
 
-    const taskich = getConnection().getRepository(TaskEntity);
-    const defaultTask = taskich.create(task);
+    const defaultTask = this.taskRepository.create(task);
     user.tasks = [defaultTask];
 
     const savedNewUser: UserEntity = await this.userRepository.save(newUser);
